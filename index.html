@@ -601,22 +601,33 @@ function spinWheel(){
   document.getElementById('spinBtn').disabled=true;
   document.getElementById('wheelResult').textContent='';
   document.getElementById('wheelCenter').textContent='…';
-  const extraSpins=5+Math.floor(Math.random()*4);
+
   const segIdx=Math.floor(Math.random()*segments);
   const segAngle=360/segments;
-  // pointer is at top (270deg in svg space), we want segIdx to land there
-  const targetAngle=360*extraSpins+(segIdx*segAngle);
-  const duration=4000;
+
+  // Segment[i] center starts at: i*segAngle + segAngle/2 degrees (clockwise from top)
+  // Pointer is at top. To land segIdx's center at top, rotate wheel by:
+  //   (360 - segCenter) + extra full spins
+  // But we must account for accumulated wheelAngle from previous spins.
+  const segCenter=segIdx*segAngle + segAngle/2;
+  const extraSpins=(5+Math.floor(Math.random()*4))*360;
+  // Total rotation from current position to land segIdx at top
+  const currentMod=((wheelAngle%360)+360)%360;
+  let delta=(360-segCenter-currentMod+360)%360;
+  if(delta<10) delta+=360; // ensure it always spins at least once
+  const totalRotation=extraSpins+delta;
+
+  const duration=4500;
   const start=performance.now();
   const startAngle=wheelAngle;
+
   function ease(t){return t<.5?4*t*t*t:1-Math.pow(-2*t+2,3)/2;}
   function frame(now){
     const t=Math.min((now-start)/duration,1);
-    wheelAngle=startAngle+targetAngle*ease(t);
+    wheelAngle=startAngle+totalRotation*ease(t);
     document.getElementById('wheelSvg').style.transform=`rotate(${wheelAngle}deg)`;
     if(t<1){requestAnimationFrame(frame);}
     else{
-      wheelAngle=wheelAngle%360;
       wonPrize=prizes[segIdx];
       spinning=false;
       document.getElementById('spinBtn').disabled=false;
