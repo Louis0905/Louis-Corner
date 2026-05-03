@@ -17,10 +17,10 @@ body{padding-top:100px;font-family:'Noto Serif TC',serif;background:var(--espres
 
 /* ── ANNOUNCE ── */
 .announce{background:var(--gold);color:var(--espresso);position:fixed;top:0;left:0;right:0;z-index:260;height:36px;display:flex;align-items:center;overflow:hidden;}
-.marquee-track{display:flex;white-space:nowrap;animation:marquee 22s linear infinite;}
+.marquee-track{display:flex;white-space:nowrap;animation:marquee 32s linear infinite;}
 .marquee-track:hover{animation-play-state:paused;}
-.marquee-item{font-size:.73rem;letter-spacing:.14em;padding:0 48px;flex-shrink:0;}
-@keyframes marquee{from{transform:translateX(0)}to{transform:translateX(-50%)}}
+.marquee-item{font-size:.73rem;letter-spacing:.14em;padding:0 64px;flex-shrink:0;}
+@keyframes marquee{from{transform:translateX(100vw)}to{transform:translateX(-100%)}}
 
 /* ── NAV ── */
 nav{position:fixed;top:36px;left:0;right:0;z-index:250;display:flex;align-items:center;justify-content:space-between;padding:0 56px;height:64px;background:rgba(16,9,4,0.92);backdrop-filter:blur(16px);border-bottom:1px solid var(--border);transition:height .3s;}
